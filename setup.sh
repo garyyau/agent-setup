@@ -59,7 +59,14 @@ merged=$(jq -s '.[0] * .[1]' "$SETTINGS" "$FRAGMENT")
 if [ "$merged" = "$(cat "$SETTINGS")" ]; then
   ok "$SETTINGS → already up to date"
 else
-  printf '%s\n' "$merged" > "$SETTINGS"
+  # Atomic write (temp + mv, so an interrupt can't truncate live settings),
+  # and show exactly what the merge changed — settings can carry keys that
+  # execute commands (hooks, statusLine), so changes should never be silent.
+  tmp=$(mktemp "$SETTINGS.XXXXXX")
+  printf '%s\n' "$merged" > "$tmp"
+  echo "  merge changes:"
+  diff -u "$SETTINGS" "$tmp" | tail -n +3 | grep '^[+-]' | sed 's/^/    /' || true
+  mv "$tmp" "$SETTINGS"
   ok "$SETTINGS → merged repo fragment (local-only keys preserved)"
 fi
 

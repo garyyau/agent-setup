@@ -1,4 +1,5 @@
 {
+  "theme": "dark",
   "tui": "fullscreen",
   "statusLine": {
     "type": "command",

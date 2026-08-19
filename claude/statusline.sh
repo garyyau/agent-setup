@@ -79,14 +79,17 @@ add2 "$model_l" "79;193;255" "$G_MODEL"           # blue
 if [ "${cw_size:-0}" -gt 0 ] 2>/dev/null; then
   add2 "ctx $(round "$cw_pct")%" "$(usage_fg "$cw_pct")" "$G_CTX"
 fi
+# Reset timestamps feed bash arithmetic, which evaluates its operands (a
+# string like 'a[$(cmd)]' would execute) — only accept plain epoch integers.
+is_epoch() { [[ ${1:-} =~ ^[0-9]+$ ]]; }
 # 5-hour session — colored by usage %
 if [ -n "$fh_pct" ]; then
-  cd5=""; [ -n "$fh_reset" ] && cd5=" $(fmt_hm $((fh_reset - now)))"
+  cd5=""; is_epoch "$fh_reset" && cd5=" $(fmt_hm $((fh_reset - now)))"
   add2 "5h $(round "$fh_pct")%${cd5}" "$(usage_fg "$fh_pct")" "$G_CLOCK"
 fi
 # 7-day session
 if [ -n "$sd_pct" ]; then
-  cd7=""; [ -n "$sd_reset" ] && cd7=" $(fmt_short $((sd_reset - now)))"
+  cd7=""; is_epoch "$sd_reset" && cd7=" $(fmt_short $((sd_reset - now)))"
   add2 "7d $(round "$sd_pct")%${cd7}" "214;112;214" "$G_CLOCK"   # purple
 fi
 
