@@ -1,0 +1,12 @@
+{
+  "tui": "fullscreen",
+  "statusLine": {
+    "type": "command",
+    "command": "bash ~/.claude/statusline.sh",
+    "padding": 0,
+    "refreshInterval": 10
+  },
+  "enabledPlugins": {
+    "mattpocock-skills@claude-plugins-official": true
+  }
+}
