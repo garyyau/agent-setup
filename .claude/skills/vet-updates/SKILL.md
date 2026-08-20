@@ -16,7 +16,9 @@ For each directory under `skills/` with a `PROVENANCE.md`:
 2. Fetch the latest upstream commit touching that path (GitHub API: `/repos/<owner>/<repo>/commits?path=<path>&per_page=1`).
 3. Same commit → verdict **current**, move on.
 4. Newer commit → fetch the file at both commits, diff them, and summarize for the user what changed and whether it alters the skill's behavior. Vet, then judge: flag anything that would conflict with how Gary uses the skill or that smells like an unwanted direction change, and give a recommendation.
-5. On the user's yes: replace the vendored copy with the upstream version, update `PROVENANCE.md`'s pinned commit and date, and commit — one commit per skill, message naming the skill and the upstream range.
+5. On the user's yes: replace the vendored copy with the upstream version, update `PROVENANCE.md`'s pinned commit and date, update that skill's row in the README provenance table (pin, and local-changes cell if the port changed), and commit — one commit per skill, message naming the skill and the upstream range. The README table summarizes `PROVENANCE.md`, so the two move together or the table lies.
+
+Before applying any update, re-fetch the upstream license file named in `PROVENANCE.md` at the new commit and diff it against the local copy under `LICENSES/`. If the license, copyright holder, or terms changed, stop and put it to the user — a relicense upstream is a decision about whether this repo can keep carrying the skill at all, not a routine sync. When the license text has changed but stays compatible, refresh the local copy in `LICENSES/` in the same commit.
 
 ## Declared plugins
 
@@ -28,4 +30,4 @@ For each key under `enabledPlugins` in `claude/settings.json`:
 
 ## Report
 
-End with a table: item, pinned/installed, upstream/marketplace, verdict. Every row carries one of the three verdicts.
+End with a table: item, pinned/installed, upstream/marketplace, verdict. Every row carries one of the three verdicts. Note any license change separately from the verdicts, since it needs its own decision.
