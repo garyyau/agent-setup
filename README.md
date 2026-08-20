@@ -34,6 +34,33 @@ The `capture-setup` skill in this repo runs this pass end to end — prefer invo
 
 Plugins follow the marketplace's latest version by design; the repo pins only what it vendors.
 
+## Licensing
+
+This repo is MIT licensed — see [`LICENSE`](./LICENSE). That covers the original work here: `setup.sh`, `claude/`, and `.claude/skills/`.
+
+Every skill under `skills/` is vendored from a third party and carries its own `PROVENANCE.md` with the upstream path, pinned commit, license, and any local modifications. That file is authoritative; the table below is a summary.
+
+| Skill | Source | Pin | Local changes |
+| --- | --- | --- | --- |
+| [`blast-radius`](./skills/blast-radius/PROVENANCE.md) | pstack | `fd6dd6f` | ported to Claude Code |
+| [`create-verification-skill`](./skills/create-verification-skill/PROVENANCE.md) | pstack | `fd6dd6f` | ported to Claude Code |
+| [`principle-guard-the-context-window`](./skills/principle-guard-the-context-window/PROVENANCE.md) | pstack | `fd6dd6f` | none |
+| [`principle-prove-it-works`](./skills/principle-prove-it-works/PROVENANCE.md) | pstack | `fd6dd6f` | none |
+| [`principle-separate-before-serializing-shared-state`](./skills/principle-separate-before-serializing-shared-state/PROVENANCE.md) | pstack | `fd6dd6f` | none |
+| [`reflect`](./skills/reflect/PROVENANCE.md) | pstack | `fd6dd6f` | ported to Claude Code |
+| [`show-me-your-work`](./skills/show-me-your-work/PROVENANCE.md) | pstack | `fd6dd6f` | ported to Claude Code |
+| [`swarm`](./skills/swarm/PROVENANCE.md) | pstack | `fd6dd6f` | ported to Claude Code |
+| [`technical-writing`](./skills/technical-writing/PROVENANCE.md) | pstack | `fd6dd6f` | none |
+| [`unslop`](./skills/unslop/PROVENANCE.md) | pstack | `99559f2` | none |
+
+**Sources:**
+
+- **pstack** — [cursor/plugins](https://github.com/cursor/plugins), path `pstack/skills/`. MIT, Copyright (c) 2026 Lauren Tan. License text: [`LICENSES/pstack-MIT.txt`](./LICENSES/pstack-MIT.txt). Identical at both pins above.
+
+Both this repo and pstack are MIT, so the terms are the same throughout; the upstream copyright notice is retained for the vendored skills as MIT requires. Plugins listed in `claude/settings.json` are marketplace-installed rather than vendored, so this repo does not redistribute them and they carry no obligation here.
+
+Adding a skill from a new source means adding its license text under `LICENSES/` and a row to **Sources** above. `vet-updates` re-checks each upstream license on every sync and stops if it changed. The full procedure is in [`CLAUDE.md`](./CLAUDE.md).
+
 ## Scope
 
 This repo is **public** — nothing private or organization-specific goes in it. Claude Code is the only agent configured today; skills live in the agent-neutral `skills/` so a future `codex/` (or other agent) directory can share them.
