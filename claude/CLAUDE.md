@@ -55,3 +55,18 @@ How to apply:
 Using gpt-5.5 inside workflows and subagents (the model parameter only takes Claude models, so use a wrapper):
 
 - Spawn a thin Claude wrapper agent with `model: 'sonnet', effort: 'low'` whose prompt instructs it to write a self-contained codex prompt, run `codex exec` via Bash, and return the raw output verbatim. The wrapper does no reasoning of its own — it only relays — so keep effort low; the real work happens in gpt-5.5 inside codex. Give the wrapper the full task context up front, since codex can't see the workflow's conversation and its prompt has to stand alone.
+
+## Engineering principles
+
+Three principles live as skills in this setup. They are deliberately not model-invocable, so nothing
+loads them on its own. Read the leaf file when its trigger fires. Naming a principle in a reply means
+it changed a decision. A citation with no decision behind it means the leaf was never read.
+
+| Trigger | Read |
+| --- | --- |
+| Concurrent actors (parallel subagents, worktrees, background jobs) might write the same file, branch, or key | `~/.claude/skills/principle-separate-before-serializing-shared-state/SKILL.md` |
+| A task is about to be called done, especially work a subagent did | `~/.claude/skills/principle-prove-it-works/SKILL.md` |
+| Context is filling up: large outputs, long files, repeated reads, planning a fan-out | `~/.claude/skills/principle-guard-the-context-window/SKILL.md` |
+
+Before spawning parallel writers, assign each one its own file, branch, or worktree in the brief.
+Instructions telling agents to avoid each other's files are not concurrency control.
